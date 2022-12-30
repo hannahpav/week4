@@ -27,10 +27,6 @@ best <- function(state, outcome) {
  if(outcometruth == FALSE){
    stop("invalid outcome")
  }
-
- if(outcometruth == FALSE || statetruth == FALSE){
-   
- }
   
     ## Return hospital name in that state with lowest 30-day death
 
@@ -52,6 +48,5 @@ newframe <- na.omit(newframe)
 
 sortedstate <- newframe[order(newframe$numberdeath, newframe[,1]),]
 
-print(head(sortedstate))
 print(sortedstate[1, 1])
 }
