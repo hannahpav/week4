@@ -49,7 +49,9 @@ colnames(statedata) <- c("hospital", "death", "state")
 numberdeath <- as.numeric(statedata$death)
 newframe <- data.frame(statedata$hospital, numberdeath)
 newframe <- na.omit(newframe)
-sortedstate <- newframe[order(newframe$numberdeath),]
 
+sortedstate <- newframe[order(newframe$numberdeath, newframe[,1]),]
+
+print(head(sortedstate))
 print(sortedstate[1, 1])
 }
