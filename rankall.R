@@ -15,20 +15,12 @@ rankall <- function(outcome, num = "best") {
     death <- 23
   }
   
-  
-  #Translate the second outcome into what they actually mean
-  if(num =="best"){
-    z <- 1}
-  else if(num == "worst"){
-    z <- length(numberdeath) }
-  else { z <- num }
-  
   ## Check that state and outcome are valid
+  
    statenames <- unique(data$State)
-  # 
-    statetruth <- state %in% statenames
-    outcometruth <- death == 11 || death == 17 || death == 23
-  # 
+   statetruth <- state %in% statenames
+   outcometruth <- death == 11 || death == 17 || death == 23
+
    if(statetruth == FALSE){
     stop("invalid state")
   }
@@ -64,23 +56,30 @@ rankall <- function(outcome, num = "best") {
   splitdata <- split(sortedframe, sortedframe$cleandata.state)
 
   # Create empty matrix that we will use for everything
-  newmatrix <- data.frame()
+  hospital <- NULL
   
-  print(splitdata[[1]])
-  # Extract the correct row
-  # for(i in 1:length(splitdata)) {
-  # 
-  #   thismatrix <- splitdata[[i]]
-  #   
-  #   #extract the row and add to matrix
-  #   newrow <- (thismatrix[z, c(1, 3)])
-  #   newmatrix <- rbind(newmatrix, newrow)
-  # }
+  # Extract the correct hospital name into a vector
+  for(i in 1:length(splitdata)) {
+    
+    thismatrix <- splitdata[[i]]
+    
+    if(num =="best"){
+      z <- 1}
+    else if(num == "worst"){
+      z <- length(thismatrix[,1]) }
+    else { z <- num }
+    
+    #extract the row and add to matrix
 
-  # Remove NA
- # newmatrix <- na.omit(newmatrix)
-  #rename the columns because it's easier
-  # colnames(newmatrix) <- c("hospital", "state")
-  # print(newmatrix)
+    newvector <- (thismatrix[z, 1])
+    hospital <- c(hospital, newvector)
+  }
+  
+  # get alphabetical list of statenames 
+   
+    state <- sort(statenames)
+    newmatrix <- data.frame(hospital, state)
+
+  #print(newmatrix)
 
 }
