@@ -15,6 +15,8 @@ rankall <- function(outcome, num = "best") {
     death <- 23
   }
   
+  
+  #Translate the second outcome into what they actually mean
   if(num =="best"){
     z <- 1}
   else if(num == "worst"){
@@ -22,7 +24,6 @@ rankall <- function(outcome, num = "best") {
   else { z <- num }
   
   ## Check that state and outcome are valid
-  # 
    statenames <- unique(data$State)
   # 
     statetruth <- state %in% statenames
@@ -41,55 +42,45 @@ rankall <- function(outcome, num = "best") {
   #rename the columns because it's easier
   colnames(littleframe) <- c("hospital", "death", "state")
   
+  #create empty frame to put in the new clean data
   cleandata <- data.frame()
   
   for(i in 1:length(littleframe$death)) {
     if(littleframe$death[i] != "Not Available") {
-      newrow <- statedata[i, ]
+      newrow <- littleframe[i, ]
       cleandata <- rbind(cleandata, newrow)
     }
     
   }
 
-  cleandata <- na.omit(cleandata)
-
-
+  #Create numeric vector so we can sort
   numberdeath <- as.numeric(cleandata$death)
-  newframe <- data.frame(cleandata$death, numberdeath, cleandata$state)
-  sortedstate <- newframe[order(newframe$numberdeath, newframe[,1]),]
   
-  splitdata <- split(sortedstate, sortedstate$state)
+  #create a sorted frame
+  newframe <- data.frame(cleandata$hospital, numberdeath, cleandata$state)
+  sortedframe <- newframe[order( newframe[,3],newframe$numberdeath, newframe[,1]),]
   
-  str(splitdata)
+  #split the frame into states
+  splitdata <- split(sortedframe, sortedframe$cleandata.state)
 
+  # Create empty matrix that we will use for everything
+  newmatrix <- data.frame()
+  
+  print(splitdata[[1]])
+  # Extract the correct row
   # for(i in 1:length(splitdata)) {
   # 
   #   thismatrix <- splitdata[[i]]
-  # 
-  #   numberdeath <- as.numeric(thismatrix$death)
-  #   newframe <- data.frame(thismatrix$hospital, numberdeath)
-  # 
-  #   sortedstate <- newframe[order(newframe$numberdeath, newframe[,1]),]
-  #   newrow <- (sortedstate[z, c(1, 3)])
-  #   newframe <- rbind(newframe, newrow)
+  #   
+  #   #extract the row and add to matrix
+  #   newrow <- (thismatrix[z, c(1, 3)])
+  #   newmatrix <- rbind(newmatrix, newrow)
   # }
-  # 
-  # print(newframe)
-  #take out all "Not Available"
 
+  # Remove NA
+ # newmatrix <- na.omit(newmatrix)
+  #rename the columns because it's easier
+  # colnames(newmatrix) <- c("hospital", "state")
+  # print(newmatrix)
 
-  
-  
-#   
-#   #sort the data from low to high
-#   numberdeath <- as.numeric(stateclean$death)
-#   newframe <- data.frame(stateclean$hospital, numberdeath)
-#   
-#   sortedstate <- newframe[order(newframe$numberdeath, newframe[,1]),]
-#   rowbow <- length(numberdeath) - 10
-#   
-#   
-
-#   
-#   print(sortedstate[z, 1])
 }
